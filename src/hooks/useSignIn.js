@@ -3,7 +3,7 @@ import { auth, signInWithEmailAndPassword } from "../firebase/firebase";
 
 const error = ref(null);
 
-const signIn = async (auth, email, password) => {
+const signIn = async (email, password) => {
   error.value = null;
 
   try {
@@ -12,11 +12,10 @@ const signIn = async (auth, email, password) => {
       throw new Error("Could not sign in into the app!");
     }
     error.value = null
-    console.log(res)
+    console.log("==>",res)
     return res
-  } catch (error) {
-    console.log(error.message);
-    error.value = error.message;
+  } catch (err) {
+    error.value = err.message;
   }
 };
 

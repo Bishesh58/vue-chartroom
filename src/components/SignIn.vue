@@ -3,7 +3,9 @@
       <input type="email" placeholder="email" v-model="email">
       <input type="password" placeholder="password" v-model="password">
       <button type="submit">Sign in</button>
-      
+      <div>
+          {{error}}
+      </div>
   </form>
 </template>
 
@@ -17,13 +19,15 @@ export default {
     const displayName = ref('')
     const email = ref('')
     const password = ref('')
+    //using hook
+    const { error, signIn } = useSignIn()
 
-    const handleSubmit =()=> {
-      const signedUser = useSignIn(email.value, password.value)
-      console.log(signedUser);
+    const handleSubmit = async()=> {
+     const user = await signIn (email.value, password.value)
+      
     }
 
-    return {displayName,email, password, handleSubmit}
+    return {displayName,email, password, handleSubmit, error}
   }
 
 }

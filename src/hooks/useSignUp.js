@@ -13,10 +13,10 @@ const signUp = async (email, password, displayName) => {
     }
     await updateProfile(res.user, { displayName });
     error.value = null
+
     return res
-  } catch (error) {
-    console.log(error.message);
-    error.value = error.message;
+  } catch (err) {
+    error.value = err.message;
   }
 };
 
