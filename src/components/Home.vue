@@ -1,10 +1,13 @@
 <template>
-  <h1>Home view..</h1>
+  <SignIn/>
 </template>
 
 <script>
+import SignIn from '../components/SignIn.vue'
 export default {
-
+    setup(){
+        
+    }
 }
 </script>
 
