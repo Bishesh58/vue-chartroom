@@ -9,6 +9,8 @@
 
 <script>
 import {ref} from 'vue'
+import useSignIn from '../hooks/useSignIn'
+
 export default {
   setup(){
     //refs
@@ -17,7 +19,8 @@ export default {
     const password = ref('')
 
     const handleSubmit =()=> {
-      console.log("dname=>",displayName.value, email.value, password.value)
+      const signedUser = useSignIn(email.value, password.value)
+      console.log(signedUser);
     }
 
     return {displayName,email, password, handleSubmit}

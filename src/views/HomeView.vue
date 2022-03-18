@@ -4,15 +4,15 @@
     <SignIn />
     <div>
       Don't have account yet?
-      <span @click="showLogin = false">sign up here</span>
+      <span @click="showLogin = false">ClickMe</span>
     </div>
   </div>
   <div v-else>
     <h3>Sign up</h3>
     <SignUp />
     <div>
-      already registered yet?
-      <span @click="showLogin = true">Login instead</span>
+      already registered user?
+      <span @click="showLogin = true">ClickMe</span>
     </div>
   </div>
 </template>
