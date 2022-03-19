@@ -8,12 +8,17 @@
         {{ error }}
       </div>
     </form>
+
+    <!--  element UI form -->
+   
+   <!--  element UI form end-->
   </div>
 </template>
 
 <script>
 import { ref } from "vue";
 import useSignIn from "../hooks/useSignIn";
+import { reactive } from 'vue'
 
 export default {
   setup() {
@@ -28,7 +33,24 @@ export default {
       const user = await signIn(email.value, password.value);
     };
 
-    return { displayName, email, password, handleSubmit, error };
+  //element ui form
+  const form = reactive({
+  name: '',
+  region: '',
+  date1: '',
+  date2: '',
+  delivery: false,
+  type: [],
+  resource: '',
+  desc: '',
+})
+
+const onSubmit = () => {
+  console.log('submit!')
+}
+//element ui end
+
+    return { displayName, email, password, handleSubmit, error, form};
   },
 };
 </script>
