@@ -1,22 +1,28 @@
 <template>
-  <div class=" h-[80vh] flex justify-center items-center" >
+  <div class="h-[80vh] flex justify-center items-center">
     <div>
-      <img src="src/assets/icons8-chat.gif" alt="alt">
+      <img src="src/assets/icons8-chat.gif" alt="alt" />
     </div>
-    <div v-if="showLogin" class=" bg-slate-300 p-8 rounded-2xl flex flex-col">
-      <h3>Sign In</h3>
+    <div v-if="showLogin" class="bg-slate-300 p-8 rounded-2xl flex flex-col">
       <SignIn />
-      <div>
+      <div class="text-sm pl-4 my-4">
         Don't have account yet?
-        <span @click="showLogin = false">ClickMe</span>
+        <span
+          @click="showLogin = false"
+          class="bg-gray-100 px-[8px] py-[3px] rounded-full cursor-pointer mx-2 hover:bg-slate-400"
+          >Sign up</span
+        >
       </div>
     </div>
-    <div v-else>
-      <h3>Sign up</h3>
+    <div v-else class="bg-slate-300 p-8 rounded-2xl flex flex-col">
       <SignUp />
-      <div>
+      <div class="text-sm pl-4 my-4">
         already registered user?
-        <span @click="showLogin = true">ClickMe</span>
+        <span
+          @click="showLogin = true"
+          class="bg-gray-100 px-[8px] py-[3px] rounded-full cursor-pointer mx-2 hover:bg-slate-400"
+          >Login</span
+        >
       </div>
     </div>
   </div>

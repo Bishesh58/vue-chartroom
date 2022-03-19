@@ -1,14 +1,32 @@
 <template>
-  <form @submit.prevent="handleSubmit">
-    <input type="text" placeholder="display name" v-model="displayName" />
-    <input type="email" placeholder="email" v-model="email" />
-    <input type="password" placeholder="password" v-model="password" />
-    <div>
-      {{ error }}
-    </div>
+  <div class="min-w-[400px]">
+    <h3 class="text-md font-bold uppercase pl-2">Sign up</h3>
+    <form @submit.prevent="handleSubmit" class="flex flex-col">
+      <input
+        type="text"
+        placeholder="display name"
+        v-model="displayName"
+        class="p-2 m-2 rounded-md"
+      />
+      <input
+        type="email"
+        placeholder="email"
+        v-model="email"
+        class="p-2 m-2 rounded-md"
+      />
+      <input
+        type="password"
+        placeholder="password"
+        v-model="password"
+        class="p-2 m-2 rounded-md"
+      />
+      <div class="text-red-700 p-2">
+        {{ error }}
+      </div>
 
-    <button type="submit">Sign Up</button>
-  </form>
+      <button type="submit" class="p-2 bg-blue-400 rounded-3xl m-2 cursor-pointer text-white hover:bg-blue-700">Sign Up</button>
+    </form>
+  </div>
 </template>
 
 <script>
