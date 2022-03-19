@@ -6,7 +6,6 @@ import Home from "./components/Home.vue"
 <template>
   <header>
     <div class="wrapper">
-      <h2>Hello world</h2>
       <nav>
         <RouterLink to="/">Home</RouterLink>
       </nav>

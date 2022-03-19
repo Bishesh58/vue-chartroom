@@ -1,18 +1,20 @@
 <template>
-  <div v-if="showLogin">
-    <h3>Sign In</h3>
-    <SignIn />
-    <div>
-      Don't have account yet?
-      <span @click="showLogin = false">ClickMe</span>
+  <div class="" >
+    <div v-if="showLogin">
+      <h3>Sign In</h3>
+      <SignIn />
+      <div>
+        Don't have account yet?
+        <span @click="showLogin = false">ClickMe</span>
+      </div>
     </div>
-  </div>
-  <div v-else>
-    <h3>Sign up</h3>
-    <SignUp />
-    <div>
-      already registered user?
-      <span @click="showLogin = true">ClickMe</span>
+    <div v-else>
+      <h3>Sign up</h3>
+      <SignUp />
+      <div>
+        already registered user?
+        <span @click="showLogin = true">ClickMe</span>
+      </div>
     </div>
   </div>
 </template>
