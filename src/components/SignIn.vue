@@ -1,8 +1,8 @@
 <template>
-  <div class="">
-    <form @submit.prevent="handleSubmit">
-      <input type="email" placeholder="email" v-model="email" />
-      <input type="password" placeholder="password" v-model="password" />
+  <div class=" min-w-[400px]">
+    <form @submit.prevent="handleSubmit" class=" flex flex-col">
+      <input type="email" placeholder="email" v-model="email" class="p-2 m-2 rounded-md"/>
+      <input type="password" placeholder="password" v-model="password" class="p-2 m-2 rounded-md"/>
       <button type="submit">Sign in</button>
       <div>
         {{ error }}

@@ -1,6 +1,9 @@
 <template>
-  <div class="" >
-    <div v-if="showLogin">
+  <div class=" h-[80vh] flex justify-center items-center" >
+    <div>
+      <img src="src/assets/icons8-chat.gif" alt="alt">
+    </div>
+    <div v-if="showLogin" class=" bg-slate-300 p-8 rounded-2xl flex flex-col">
       <h3>Sign In</h3>
       <SignIn />
       <div>
