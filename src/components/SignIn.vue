@@ -34,7 +34,7 @@ import useSignIn from "../hooks/useSignIn";
 import { reactive } from "vue";
 
 export default {
-  setup() {
+  setup(props, context) {
     //refs
     const displayName = ref("");
     const email = ref("");
@@ -44,6 +44,10 @@ export default {
 
     const handleSubmit = async () => {
       const user = await signIn(email.value, password.value);
+    if(!error.message){
+      context.emit('login')
+    }
+    
     };
 
     //element ui form

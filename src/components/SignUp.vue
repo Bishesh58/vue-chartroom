@@ -14,17 +14,22 @@
         v-model="email"
         class="p-2 m-2 rounded-md"
       />
+
       <input
         type="password"
         placeholder="password"
         v-model="password"
         class="p-2 m-2 rounded-md"
       />
+      <button
+        type="submit"
+        class="p-2 bg-blue-400 rounded-3xl m-2 cursor-pointer text-white hover:bg-blue-700"
+      >
+        Sign Up
+      </button>
       <div class="text-red-700 p-2">
         {{ error }}
       </div>
-
-      <button type="submit" class="p-2 bg-blue-400 rounded-3xl m-2 cursor-pointer text-white hover:bg-blue-700">Sign Up</button>
     </form>
   </div>
 </template>
@@ -34,7 +39,7 @@ import { async } from "@firebase/util";
 import { ref } from "vue";
 import useSignup from "../hooks/useSignUp";
 export default {
-  setup() {
+  setup(props, context) {
     //refs
     const displayName = ref("");
     const email = ref("");
@@ -45,7 +50,9 @@ export default {
 
     const handleSubmit = async () => {
       const user = await signUp(email.value, password.value, displayName.value);
-      console.log(user);
+      if(!error.message){
+      context.emit('signup')
+    }
     };
 
     return { displayName, email, password, handleSubmit, error };

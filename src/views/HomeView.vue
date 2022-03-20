@@ -3,8 +3,8 @@
     <div>
       <img src="src/assets/icons8-chat.gif" alt="alt" />
     </div>
-    <div v-if="showLogin" class="bg-slate-300 p-8 rounded-2xl flex flex-col">
-      <SignIn />
+    <div v-if="showLogin" class="bg-slate-300 p-8 rounded-2xl flex flex-col shadow-md">
+      <SignIn  @login="enterChat"/>
       <div class="text-sm pl-4 my-4">
         Don't have account yet?
         <span
@@ -14,8 +14,8 @@
         >
       </div>
     </div>
-    <div v-else class="bg-slate-300 p-8 rounded-2xl flex flex-col">
-      <SignUp />
+    <div v-else class="bg-slate-300 p-8 rounded-2xl flex flex-col shadow-md">
+      <SignUp @signup="enterChat"/>
       <div class="text-sm pl-4 my-4">
         already registered user?
         <span
@@ -32,13 +32,17 @@
 import SignIn from "../components/SignIn.vue";
 import SignUp from "../components/SignUp.vue";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 export default {
   components: { SignIn, SignUp },
 
   setup() {
     const showLogin = ref(true);
-
-    return { showLogin };
+    const router = useRouter();
+  const enterChat =()=> {
+    router.push({name: 'chatroom'})
+  }
+    return { showLogin, enterChat };
   },
 };
 </script>
