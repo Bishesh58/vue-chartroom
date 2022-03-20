@@ -5,7 +5,8 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  updateProfile
+  updateProfile,
+  signOut
 } from "firebase/auth";
 
 // Your web app's Firebase configuration
@@ -30,5 +31,6 @@ export {
   auth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  updateProfile
+  updateProfile,
+  signOut
 };
