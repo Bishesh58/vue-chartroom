@@ -8,10 +8,13 @@
 <script>
 import useLogout from "../hooks/useLogout";
 import { useRouter } from "vue-router";
+import getUser from '../hooks/getUser'
 export default {
     setup(){
         const {logout, error } = useLogout()
         const router = useRouter();
+        const {user} = getUser()
+
         const handleLogout =async() =>{
            await logout()
            if(!error.value){
@@ -20,7 +23,7 @@ export default {
             router.push('/')
         }
 
-        return {logout, error, handleLogout}
+        return {logout, error, handleLogout, user}
     }
 };
 </script>
