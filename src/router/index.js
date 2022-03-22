@@ -1,10 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import ChatRoomView from '../views/ChatRoomView.vue'
-import {auth} from "../firebase/firebase"
+import {getAuth} from 'firebase/auth'
 
 //auth guard
 const requireAuth =(to, from, next)=> {
+  const auth = getAuth();
   let currentUser = auth.currentUser
   if(!currentUser)
     next({name: 'home'})
