@@ -28,35 +28,36 @@
         Sign Up
       </button>
       <div class="text-red-700 p-2">
-        {{ error }}
+        {{ erMsg }}
       </div>
     </form>
   </div>
 </template>
 
-<script>
+<script setup>
 import { async } from "@firebase/util";
 import { ref } from "vue";
-import useSignup from "../hooks/useSignUp";
-export default {
-  setup(props, context) {
-    //refs
-    const displayName = ref("");
-    const email = ref("");
-    const password = ref("");
-
-    //hooks
-    const { error, signUp } = useSignup();
-
-    const handleSubmit = async () => {
-      const user = await signUp(email.value, password.value, displayName.value);
-      if(!error.message){
-      context.emit('signup')
-    }
-    };
-
-    return { displayName, email, password, handleSubmit, error };
-  },
+import { getAuth, createUserWithEmailAndPassword} from 'firebase/auth'
+import {useRouter} from 'vue-router'
+//refs
+const displayName = ref("");
+const email = ref("");
+const password = ref("");
+const erMsg = ref("")
+const router = useRouter();
+const handleSubmit = () => {
+  const auth = getAuth();
+  createUserWithEmailAndPassword(auth, email.value, password.value)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    router.push({name: 'chatroom'})
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    erMsg.value = error.message;
+    // ..
+  });
 };
 </script>
 
