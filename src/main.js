@@ -10,6 +10,7 @@ import "element-plus/dist/index.css";
 
 //firebaseRef
 import { getApps, initializeApp } from "firebase/app";
+import { getFirestore}  from "firebase/firestore";
 /* ------------------------------------------------------ */
 //Firebase configuration
 const firebaseConfig = {
@@ -23,6 +24,10 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
+
+// Initialize Cloud Firestore and get a reference to the service
+const db = getFirestore(firebaseApp);
+export {db}
 /* ------------------------------------------------------ */
 
 const app = createApp(App);

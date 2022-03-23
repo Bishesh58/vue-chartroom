@@ -12,6 +12,7 @@
 import { useRouter } from "vue-router";
 import { getAuth, signOut } from "firebase/auth";
 
+
 const router = useRouter();
 
 const handleLogout = () => {
