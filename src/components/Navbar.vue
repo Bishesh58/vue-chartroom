@@ -1,8 +1,7 @@
 <template>
   <nav class="bg-purple-400 flex justify-between p-4">
-    <p>Logo</p>
+    <p>{{}}</p>
     <div class="flex space-x-2">
-      <p>{{  }}</p>
       <p>{{ }}</p>
       <button @click="handleLogout">Logout</button>
     </div>
