@@ -37,27 +37,39 @@
 <script setup>
 import { async } from "@firebase/util";
 import { ref } from "vue";
-import { getAuth, createUserWithEmailAndPassword} from 'firebase/auth'
-import {useRouter} from 'vue-router'
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { useRouter } from "vue-router";
 //refs
 const displayName = ref("");
 const email = ref("");
 const password = ref("");
-const erMsg = ref("")
+const erMsg = ref("");
 const router = useRouter();
 const handleSubmit = () => {
   const auth = getAuth();
   createUserWithEmailAndPassword(auth, email.value, password.value)
-  .then((userCredential) => {
-    // Signed in 
-    const user = userCredential.user;
-    router.push({name: 'chatroom'})
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    erMsg.value = error.message;
-    // ..
-  });
+    .then((userCredential) => {
+      // Signed in
+      const user = userCredential.user;
+      updateProfile(auth.currentUser, {
+        displayName,
+      })
+        .then(() => {
+          router.push({ name: "chatroom" });
+        })
+        .catch((error) => {
+          console.log(error.message)
+        });
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      erMsg.value = error.message;
+      // ..
+    });
 };
 </script>
 
