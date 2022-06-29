@@ -1,6 +1,6 @@
 <script setup>
 import { onBeforeMount, ref } from "vue";
-import { db } from "../Firebase/config";
+import { db, auth } from "../Firebase/config";
 import { storeToRefs } from "pinia";
 import { useUserStore } from "../stores/useUser";
 import {
@@ -12,40 +12,26 @@ import {
 } from "firebase/firestore";
 
 const allMessages = ref([]);
-
+const user = auth.currentUser;
 onBeforeMount(() => {
-  const q = query(collection(db, "chats"));
-  // onSnapshot(q, (querySnapshot) => {
-  //   allMessages.value = []
-  //   querySnapshot.forEach((doc) => {
-  //     //inside subcollection
-  //     let messages = [];
-  //     const qMessage = query(collection(db, "chats", doc.id, "message"), orderBy('createdAt'));
-  //     onSnapshot(qMessage, (querySnapshot) => {
-  //       messages = []
-  //       querySnapshot.forEach((doc) => {
-  //         //inside subcollection
-  //         messages.push(doc.data())
-  //         console.log(messages)
-  //       });
-  //     });
-  //   });
-  // });
+  const q = query(collection(db, "users"));
 
   onSnapshot(q, (querySnapshot) => {
     querySnapshot.docChanges().forEach((change) => {
       if (change.type === "added") {
-        console.log("new data: ", change.doc.data());
+        let avatarId = change.doc.data().avatarId;
+        let userUid = change.doc.data().userUid;
         const qMessage = query(
-          collection(db, "chats", change.doc.id, "message"),
+          collection(db, "users", change.doc.id, "chats"),
           orderBy("createdAt")
         );
         onSnapshot(qMessage, (querySnapshot) => {
           querySnapshot.docChanges().forEach((change) => {
-            //inside subcollection
             if (change.type === "added") {
-              allMessages.value.push(change.doc.data());
-              console.log(change.doc.data())
+              const myData = change.doc.data();
+              myData.avatarId = avatarId;
+              myData.userUid = userUid;
+              allMessages.value.push(myData);
             }
           });
         });
@@ -64,161 +50,17 @@ const { avatar } = storeToRefs(useUserStore());
     <div
       v-for="(item, index) in allMessages"
       :key="index"
-      class="flex p-2 bg-slate-300 border rounded-lg m-1 w-fit justify-center items-center self-start"
+      class="flex p-2 rounded-lg m-1 w-fit justify-center items-center self-end"
+      :class="[user.uid === item.userUid ? 'bg-green-400' : 'bg-slate-300']"
     >
       <p>{{ item.message }}</p>
-      <img :src="avatar" width="40" class="rounded-full px-2" alt="av" />
-    </div>
-    <div
-      class="flex p-2 bg-green-400 rounded-lg m-1 w-fit justify-center items-center"
-    >
-      <p>your message</p>
-      <img :src="avatar" width="40" class="rounded-full px-2" alt="av" />
-    </div>
-    <div
-      class="flex p-2 bg-green-400 rounded-lg m-1 w-fit justify-center items-center"
-    >
-      <p>
-        your message Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-        Odit nostrum molestiae ipsum deleniti. Enim dicta maxime ad expedita how
-        are youasdfklj hello bishesh illo, odio sit neque est dolorum, quia
-        culpa alias voluptatum veritatis.
-      </p>
-      <img :src="avatar" width="40" class="rounded-full px-2" alt="av" />
-    </div>
-    <!-- testing -->
-    <div
-      class="flex p-2 bg-slate-300 border rounded-lg m-1 w-fit justify-center items-center self-start"
-    >
-      <p>others message</p>
-      <img :src="avatar" width="40" class="rounded-full px-2" alt="av" />
-    </div>
-    <div
-      class="flex p-2 bg-green-400 rounded-lg m-1 w-fit justify-center items-center"
-    >
-      <p>your message</p>
-      <img :src="avatar" width="40" class="rounded-full px-2" alt="av" />
-    </div>
-    <div
-      class="flex p-2 bg-green-400 rounded-lg m-1 w-fit justify-center items-center"
-    >
-      <p>
-        your message Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-        Odit nostrum molestiae ipsum deleniti. Enim dicta maxime ad expedita how
-        are youasdfklj hello
-      </p>
-      <img :src="avatar" width="40" class="rounded-full px-2" alt="av" />
-    </div>
-    <!-- testing -->
-    <div
-      class="flex p-2 bg-slate-300 border rounded-lg m-1 w-fit justify-center items-center self-start"
-    >
-      <p>others message</p>
-      <img :src="avatar" width="40" class="rounded-full px-2" alt="av" />
-    </div>
-    <div
-      class="flex p-2 bg-green-400 rounded-lg m-1 w-fit justify-center items-center"
-    >
-      <p>your message</p>
-      <img :src="avatar" width="40" class="rounded-full px-2" alt="av" />
-    </div>
-    <div
-      class="flex p-2 bg-green-400 rounded-lg m-1 w-fit justify-center items-center"
-    >
-      <p>
-        your message Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-        Odit nostrum molestiae ipsum deleniti. Enim dicta maxime ad expedita how
-        are youasdfklj hello bishesh illo, odio sit neque est dolorum, quia
-        culpa alias voluptatum veritatis.
-      </p>
-      <img :src="avatar" width="40" class="rounded-full px-2" alt="av" />
-    </div>
-    <div
-      class="flex p-2 bg-slate-300 border rounded-lg m-1 w-fit justify-center items-center"
-    >
-      <p>others message</p>
-      <img :src="avatar" width="40" class="rounded-full px-2" alt="av" />
-    </div>
-    <div
-      class="flex p-2 bg-green-400 rounded-lg m-1 w-fit justify-center items-center"
-    >
-      <p>your message</p>
-      <img :src="avatar" width="40" class="rounded-full px-2" alt="av" />
-    </div>
-    <div
-      class="flex p-2 bg-green-400 rounded-lg m-1 w-fit justify-center items-center"
-    >
-      <p>
-        your message Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-        Odit nostrum molestiae ipsum deleniti. Enim dicta maxime ad expedita how
-        are youasdfklj
-      </p>
-      <img :src="avatar" width="40" class="rounded-full px-2" alt="av" />
-    </div>
-    <div
-      class="flex p-2 bg-slate-300 border rounded-lg m-1 w-fit justify-center items-center"
-    >
-      <p>others message</p>
-      <img :src="avatar" width="40" class="rounded-full px-2" alt="av" />
-    </div>
-    <div
-      class="flex p-2 bg-green-400 rounded-lg m-1 w-fit justify-center items-center"
-    >
-      <p>your message</p>
-      <img :src="avatar" width="40" class="rounded-full px-2" alt="av" />
-    </div>
-    <div
-      class="flex p-2 bg-green-400 rounded-lg m-1 w-fit justify-center items-center"
-    >
-      <p>
-        your message Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-        Odit nostrum
-      </p>
-      <img :src="avatar" width="40" class="rounded-full px-2" alt="av" />
-    </div>
-    <div
-      class="flex p-2 bg-slate-300 border rounded-lg m-1 w-fit justify-center items-center"
-    >
-      <p>others message</p>
-      <img :src="avatar" width="40" class="rounded-full px-2" alt="av" />
-    </div>
-    <div
-      class="flex p-2 bg-green-400 rounded-lg m-1 w-fit justify-center items-center"
-    >
-      <p>your message</p>
-      <img :src="avatar" width="40" class="rounded-full px-2" alt="av" />
-    </div>
-    <div
-      class="flex p-2 bg-green-400 rounded-lg m-1 w-fit justify-center items-center"
-    >
-      <p>
-        your message Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-        Odit nostrum molestiae ipsum deleniti. Enim dicta maxime ad expedita how
-        are youasdfklj hello bishesh illo, odio sit neque est dolorum, quia
-        culpa alias voluptatum veritatis.
-      </p>
-      <img :src="avatar" width="40" class="rounded-full px-2" alt="av" />
-    </div>
-    <div
-      class="flex p-2 bg-slate-300 border rounded-lg m-1 w-fit justify-center items-center"
-    >
-      <p>others message</p>
-      <img :src="avatar" width="40" class="rounded-full px-2" alt="av" />
-    </div>
-    <div
-      class="flex p-2 bg-green-400 rounded-lg m-1 w-fit justify-center items-center"
-    >
-      <p>your message</p>
-      <img :src="avatar" width="40" class="rounded-full px-2" alt="av" />
-    </div>
-    <div
-      class="flex p-2 bg-green-400 rounded-lg m-1 w-fit justify-center items-center"
-    >
-      <p>
-        your message Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-        Odit nostrum mole
-      </p>
-      <img :src="avatar" width="40" class="rounded-full px-2" alt="av" />
+
+      <img
+        :src="`https://avatars.dicebear.com/api/avataaars/${item.avatarId}.svg`"
+        width="40"
+        class="rounded-full px-2"
+        alt="av"
+      />
     </div>
   </div>
 </template>

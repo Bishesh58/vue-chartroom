@@ -24,8 +24,7 @@ const saveMessage = async () => {
     createdAt: serverTimestamp(),
   };
   try {
-    await setDoc(doc(db, "chats", userUid), { timestamp: serverTimestamp() });
-    await setDoc(doc(db, "chats", userUid, "message", uuid), history);
+    await setDoc(doc(db, "users", userUid, "chats", uuid), history);
     message.value = "";
   } catch (e) {
     console.error("Error adding document: ", e);

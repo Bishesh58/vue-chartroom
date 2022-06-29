@@ -45,8 +45,15 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { useRouter } from "vue-router";
-import { setDoc, addDoc, collection, doc } from "@firebase/firestore";
+import {
+  setDoc,
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+} from "@firebase/firestore";
 import { db } from "../Firebase/config";
+
 //refs
 const displayName = ref("");
 const email = ref("");
@@ -57,17 +64,16 @@ const handleSubmit = () => {
   const auth = getAuth();
   createUserWithEmailAndPassword(auth, email.value, password.value)
     .then(async (newAthUser) => {
-      await setDoc(
-        doc(db, "users", newAthUser.user.uid),
-        {
-          email: email.value,
-          displayName: displayName.value,
-          avatarId: Math.round(Math.random() * 100000),
-        },
-        {
-          merge: true,
-        }
-      );
+      const avatarId = Math.round(Math.random() * 100000);
+      const userUid = newAthUser.user.uid;
+      await setDoc(doc(db, "users", userUid), {
+        avatarId,
+        email: email.value,
+        displayName: displayName.value,
+        userUid,
+        timestamp: serverTimestamp(),
+      });
+
       router.push({ name: "chatroom" });
     })
     .catch((error) => {
