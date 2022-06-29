@@ -3,21 +3,22 @@ import { ref, onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
 import { getAuth, signOut, updateProfile } from "firebase/auth";
 import { auth } from "../Firebase/config";
-import { useAvatarStore } from "../stores/avatars";
 import { storeToRefs } from "pinia";
-import { Edit, } from '@element-plus/icons-vue'
-
-
-
+import { useAvatarStore } from "../stores/avatars";
+import { useUserStore } from "../stores/useUser";
+import { Edit } from "@element-plus/icons-vue";
 
 const router = useRouter();
-const user = auth.currentUser;
+//const user = auth.currentUser;
 
-const store = useAvatarStore();
-const { avatar } = storeToRefs(store);
+const avatarStore = useAvatarStore();
+const userStore = useUserStore();
+const { user } = storeToRefs(userStore);
+const { avatar } = storeToRefs(avatarStore);
+
 
 onBeforeMount(() => {
-  store.fetchAvatars();
+  avatarStore.fetchAvatars();
 });
 const handleLogout = () => {
   const auth = getAuth();
@@ -32,8 +33,9 @@ const handleLogout = () => {
 };
 
 const changeAvatar = () => {
-  store.fetchAvatars();
+  avatarStore.fetchAvatars();
 };
+
 </script>
 
 <template>
@@ -46,10 +48,10 @@ const changeAvatar = () => {
       <div class="flex flex-col items-start justify-center">
         <p class="">
           {{
-            user.displayName || user.email || `Guest(${user.uid.slice(0, 7)})`
+            user.displayName || user.email
           }}
         </p>
-        <el-icon  @click="changeAvatar" class="hover:cursor-pointer">
+        <el-icon v-if="!auth.currentUser.isAnonymous" @click="changeAvatar" class="hover:cursor-pointer">
           <Edit />
         </el-icon>
       </div>

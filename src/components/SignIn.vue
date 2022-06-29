@@ -1,3 +1,54 @@
+<script setup>
+import { ref } from "vue";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signInAnonymously,
+} from "firebase/auth";
+import { useRouter } from "vue-router";
+
+//references
+const auth = getAuth();
+const displayName = ref("");
+const email = ref("");
+const password = ref("");
+const erMsg = ref("");
+const router = useRouter();
+
+const signin = () => {
+  signInWithEmailAndPassword(auth, email.value, password.value)
+    .then(async (authUser) => {
+      router.push({ name: "chatroom" });
+    })
+    .catch((error) => {
+      switch (error.code) {
+        case "auth/invalid-email":
+          erMsg.value = "Invalid email!";
+          break;
+        case "auth/user-not-found":
+          erMsg.value = "No account with that email was found!";
+          break;
+        case "auth/wrong-password":
+          erMsg.value = "Incorrect password";
+          break;
+        default:
+          erMsg.value = error.message;
+          break;
+      }
+    });
+};
+
+const guestLogin = async () => {
+  try {
+    await signInAnonymously(auth).then(() => {
+      router.push({ name: "chatroom" });
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+</script>
+
 <template>
   <div class="min-w-[400px]">
     <h3 class="text-md font-bold uppercase pl-2">Login</h3>
@@ -23,68 +74,17 @@
         {{ erMsg }}
       </div>
     </form>
-     <button
-        class="w-20 p-2 bg-blue-400 rounded-3xl m-2 cursor-pointer text-white hover:bg-blue-700"
-        @click="guestLogin"
-      >
-        Guest
-      </button>
+    <button
+      class="w-20 p-2 bg-blue-400 rounded-3xl m-2 cursor-pointer text-white hover:bg-blue-700"
+      @click="guestLogin"
+    >
+      Guest
+    </button>
 
     <!--  element UI form -->
 
     <!--  element UI form end-->
   </div>
 </template>
-
-<script setup>
-import { ref } from "vue";
-import { getAuth, signInWithEmailAndPassword, signInAnonymously } from "firebase/auth";
-import { useRouter } from "vue-router";
-
-//references
-const auth = getAuth();
-const displayName = ref("");
-const email = ref("");
-const password = ref("");
-const erMsg = ref("");
-const router = useRouter();
-
-const signin = () => {
-  
-  signInWithEmailAndPassword(auth, email.value, password.value)
-    .then((authUser) => {
-      // Signed in
-      const user = authUser.user;
-      router.push({name: 'chatroom'})
-    })
-    .catch((error) => {
-      switch(error.code){
-        case "auth/invalid-email":
-          erMsg.value = "Invalid email!";
-          break;
-        case "auth/user-not-found":
-          erMsg.value = "No account with that email was found!";
-          break;
-        case "auth/wrong-password":
-          erMsg.value = "Incorrect password";
-          break;
-        default:
-          erMsg.value = error.message;
-          break;
-      }
-    });
-};
-
-const guestLogin =async()=> {
-  try {
-    await signInAnonymously(auth).then(()=> {
-      router.push({name: 'chatroom'})
-    })
-  } catch (error) {
-    console.log(error.message)
-  }
-}
-
-</script>
 
 <style></style>
