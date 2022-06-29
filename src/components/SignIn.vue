@@ -23,6 +23,12 @@
         {{ erMsg }}
       </div>
     </form>
+     <button
+        class="w-20 p-2 bg-blue-400 rounded-3xl m-2 cursor-pointer text-white hover:bg-blue-700"
+        @click="guestLogin"
+      >
+        Guest
+      </button>
 
     <!--  element UI form -->
 
@@ -32,10 +38,11 @@
 
 <script setup>
 import { ref } from "vue";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, signInAnonymously } from "firebase/auth";
 import { useRouter } from "vue-router";
 
 //references
+const auth = getAuth();
 const displayName = ref("");
 const email = ref("");
 const password = ref("");
@@ -43,7 +50,7 @@ const erMsg = ref("");
 const router = useRouter();
 
 const signin = () => {
-  const auth = getAuth();
+  
   signInWithEmailAndPassword(auth, email.value, password.value)
     .then((authUser) => {
       // Signed in
@@ -67,6 +74,16 @@ const signin = () => {
       }
     });
 };
+
+const guestLogin =async()=> {
+  try {
+    await signInAnonymously(auth).then(()=> {
+      router.push({name: 'chatroom'})
+    })
+  } catch (error) {
+    console.log(error.message)
+  }
+}
 
 </script>
 

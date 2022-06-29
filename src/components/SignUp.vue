@@ -56,7 +56,7 @@ const handleSubmit = () => {
       // Signed in
       const user = userCredential.user;
       updateProfile(auth.currentUser, {
-        displayName,
+        displayName: displayName.value,
       })
         .then(() => {
           router.push({ name: "chatroom" });

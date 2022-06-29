@@ -3,7 +3,7 @@ import { ref, onBeforeMount} from "vue";
 import { useRouter } from "vue-router";
 import { getAuth, signOut, updateProfile } from "firebase/auth";
 import { auth } from "../Firebase/config";
-import { PencilIcon } from "@heroicons/vue/solid";
+import { XIcon } from "@heroicons/vue/solid";
 import { useAvatarStore } from "../stores/avatars";
 import { storeToRefs } from "pinia";
 const router = useRouter();
@@ -33,23 +33,23 @@ const changeAvatar = () => {
 </script>
 
 <template>
-  <nav class="bg-purple-400 flex justify-between p-4">
+  <nav class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex justify-between px-6 text-white">
     <div class="flex items-center justify-center">
       <div class="flex flex-col items-center justify-center">
         <img
          :src="avatar"
           width="80"
-          class="border rounded-full p-1"
+          class="rounded-full p-1"
           alt="av"
         />
         
-        <PencilIcon
-          class="w-4 h-4 -mt-8 -mr-14 hover:cursor-pointer text-gray-300"
+        <XIcon
+          class="w-4 h-4 -mt-8 -ml-20 hover:cursor-pointer text-gray-300 rounded-full border p-[1px]"
           @click="changeAvatar"
         />
       </div>
 
-      <p class="ml-2">{{ user.displayName || user.email }}</p>
+      <p class="">{{ user.displayName || user.email || `Guest(${user.uid.slice(0,7)})` }}</p>
     </div>
 
     <div class="flex space-x-2">
