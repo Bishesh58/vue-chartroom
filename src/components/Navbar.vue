@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
-import { signOut } from "firebase/auth";
+import { signOut, getAuth } from "firebase/auth";
 import { auth } from "../Firebase/config";
 import { storeToRefs } from "pinia";
 import { setDoc, doc } from "@firebase/firestore";
