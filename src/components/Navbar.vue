@@ -10,7 +10,6 @@ import { useUserStore } from "../stores/useUser";
 import { Edit } from "@element-plus/icons-vue";
 
 const router = useRouter();
-//const user = auth.currentUser;
 
 const userStore = useUserStore();
 const { user, avatar } = storeToRefs(userStore);
@@ -44,9 +43,9 @@ const changeAvatar = () => {
 
 <template>
   <nav
-    class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex justify-between px-6 text-white"
+    class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex justify-between px-6 text-white min-h-[70px]"
   >
-    <div class="flex items-center justify-center">
+    <div v-if="user.avatarId" class="flex items-center justify-center">
       <img :src="avatar" width="80" class="rounded-full p-1 -mb-3" alt="av" />
 
       <div class="flex flex-col items-start justify-center">
@@ -62,7 +61,7 @@ const changeAvatar = () => {
         </el-icon>
       </div>
     </div>
-
+    <div v-else></div>
     <div class="flex space-x-2 mr-4">
       <button @click="handleLogout">Logout</button>
     </div>
