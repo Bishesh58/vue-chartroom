@@ -4,11 +4,9 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../Firebase/config";
 import { v4 as uuidv4 } from "uuid";
-import { storeToRefs } from "pinia";
-import { useAvatarStore } from "../stores/avatars";
 import { Star, Promotion} from "@element-plus/icons-vue";
 
-const { avatar } = storeToRefs(useAvatarStore());
+
 
 const name = ref("");
 const message = ref("");

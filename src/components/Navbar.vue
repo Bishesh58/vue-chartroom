@@ -1,25 +1,20 @@
 <script setup>
 import { ref, onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
-import { getAuth, signOut, updateProfile } from "firebase/auth";
+import { signOut } from "firebase/auth";
 import { auth } from "../Firebase/config";
 import { storeToRefs } from "pinia";
-import { useAvatarStore } from "../stores/avatars";
+import { setDoc, doc } from "@firebase/firestore";
+import { db } from "../Firebase/config";
 import { useUserStore } from "../stores/useUser";
 import { Edit } from "@element-plus/icons-vue";
 
 const router = useRouter();
 //const user = auth.currentUser;
 
-const avatarStore = useAvatarStore();
 const userStore = useUserStore();
-const { user } = storeToRefs(userStore);
-const { avatar } = storeToRefs(avatarStore);
+const { user, avatar } = storeToRefs(userStore);
 
-
-onBeforeMount(() => {
-  avatarStore.fetchAvatars();
-});
 const handleLogout = () => {
   const auth = getAuth();
   signOut(auth)
@@ -33,9 +28,18 @@ const handleLogout = () => {
 };
 
 const changeAvatar = () => {
-  avatarStore.fetchAvatars();
+  const avatarId = Math.round(Math.random() * 100000);
+  userStore.fetchAvatar(avatarId);
+  setDoc(
+    doc(db, "users", auth.currentUser.uid),
+    {
+      avatarId,
+    },
+    {
+      merge: true,
+    }
+  );
 };
-
 </script>
 
 <template>
@@ -47,11 +51,13 @@ const changeAvatar = () => {
 
       <div class="flex flex-col items-start justify-center">
         <p class="">
-          {{
-            user.displayName || user.email
-          }}
+          {{ user.displayName || user.email }}
         </p>
-        <el-icon v-if="!auth.currentUser.isAnonymous" @click="changeAvatar" class="hover:cursor-pointer">
+        <el-icon
+          v-if="!auth.currentUser.isAnonymous"
+          @click="changeAvatar"
+          class="hover:cursor-pointer"
+        >
           <Edit />
         </el-icon>
       </div>

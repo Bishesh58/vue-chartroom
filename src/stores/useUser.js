@@ -6,10 +6,14 @@ export const useUserStore = defineStore({
   id: "user",
   state: () => ({
     user: {},
+    avatar: "",
   }),
   getters: {
     getuser(state) {
       return state.user;
+    },
+    getAvatar(state) {
+      return state.avatar;
     },
   },
   actions: {
@@ -21,6 +25,9 @@ export const useUserStore = defineStore({
       } else {
         console.log("No such document!");
       }
+    },
+    fetchAvatar(avatarId) {
+      this.avatar = `https://avatars.dicebear.com/api/avataaars/${avatarId}.svg`;
     },
   },
 });

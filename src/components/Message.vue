@@ -1,8 +1,8 @@
 <script setup>
 import { storeToRefs } from "pinia";
-import { useAvatarStore } from "../stores/avatars";
+import { useUserStore } from "../stores/useUser";
 
-const { avatar } = storeToRefs(useAvatarStore());
+const { avatar } = storeToRefs(useUserStore());
 </script>
 <template>
   <div
