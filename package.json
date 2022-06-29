@@ -11,9 +11,10 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.0.6",
     "@heroicons/vue": "^1.0.6",
     "axios": "^0.27.2",
-    "element-plus": "^2.1.4",
+    "element-plus": "^2.2.6",
     "firebase": "^9.6.8",
     "pinia": "^2.0.11",
     "uuid": "^8.3.2",

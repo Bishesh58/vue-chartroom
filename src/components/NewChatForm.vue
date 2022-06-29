@@ -1,11 +1,12 @@
 <script setup>
 import { ref } from "vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { doc, setDoc, Timestamp } from "firebase/firestore";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../Firebase/config";
 import { v4 as uuidv4 } from "uuid";
 import { storeToRefs } from "pinia";
 import { useAvatarStore } from "../stores/avatars";
+import { Star, Promotion} from "@element-plus/icons-vue";
 
 const { avatar } = storeToRefs(useAvatarStore());
 
@@ -15,13 +16,11 @@ const auth = getAuth();
 const user = auth.currentUser;
 const uid = uuidv4();
 
-
-
 const saveMessage = async () => {
   const chats = {
     name: user.displayName,
     message: message.value,
-    createdAt: Timestamp.fromDate(new Date()),
+    timestamp: serverTimestamp(),
   };
   try {
     await setDoc(doc(db, "chats", uid), chats);
@@ -33,23 +32,18 @@ const saveMessage = async () => {
 </script>
 
 <template>
-  <form
-    @submit.prevent="saveMessage"
-    class="w-full min-h-screen p-20 bg-slate-100"
-  >
+  <form @submit.prevent="saveMessage" class="w-full py-10 px-9 bg-slate-100 flex justify-center">
     <input
       type="text"
       name=""
+      autofocus
       placeholder="type your message here..."
       v-model="message"
-      class="w-1/2 p-3 border rounded-md"
+      class="w-full py-2 px-6 outline-none border rounded-md mr-1"
     />
-    <img
-        :src="avatar"
-        width="50"
-        class="border rounded-full p-1"
-        alt="av"
-      />
+   <el-button type="success" size="large" @click="saveMessage">
+      send<el-icon class="el-icon--right"><Promotion /></el-icon>
+    </el-button>
   </form>
 </template>
 
