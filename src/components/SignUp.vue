@@ -13,6 +13,7 @@
         placeholder="email"
         v-model="email"
         class="p-2 m-2 rounded-md"
+        required
       />
 
       <input
@@ -20,6 +21,7 @@
         placeholder="password"
         v-model="password"
         class="p-2 m-2 rounded-md"
+        required
       />
       <button
         type="submit"
@@ -43,6 +45,8 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { useRouter } from "vue-router";
+import { setDoc, addDoc, collection, doc } from "@firebase/firestore";
+import { db } from "../Firebase/config";
 //refs
 const displayName = ref("");
 const email = ref("");
@@ -52,23 +56,35 @@ const router = useRouter();
 const handleSubmit = () => {
   const auth = getAuth();
   createUserWithEmailAndPassword(auth, email.value, password.value)
-    .then((userCredential) => {
-      // Signed in
-      const user = userCredential.user;
-      updateProfile(auth.currentUser, {
-        displayName: displayName.value,
-      })
-        .then(() => {
-          router.push({ name: "chatroom" });
-        })
-        .catch((error) => {
-          console.log(error.message)
-        });
+    .then(async (newAthUser) => {
+      await setDoc(
+        doc(db, "users", newAthUser.user.uid),
+        {
+          email: email.value,
+          displayName: displayName.value,
+          avatarId: Math.round(Math.random() * 100000),
+        },
+        {
+          merge: true,
+        }
+      );
+      router.push({ name: "chatroom" });
     })
     .catch((error) => {
-      const errorCode = error.code;
-      erMsg.value = error.message;
-      // ..
+      switch (error.code) {
+        case "auth/invalid-email":
+          erMsg.value = "Invalid email!";
+          break;
+        case "auth/email-already-in-use":
+          erMsg.value = "email already taken!";
+          break;
+        case "auth/weak-password":
+          erMsg.value = "password should be 6 character long";
+          break;
+        default:
+          erMsg.value = error.message;
+          break;
+      }
     });
 };
 </script>
