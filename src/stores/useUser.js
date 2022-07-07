@@ -18,8 +18,10 @@ export const useUserStore = defineStore({
   },
   actions: {
     async fetchUser(userUid) {
+      
       const docRef = doc(db, "users", userUid);
       const docSnap = await getDoc(docRef);
+      console.log(docSnap)
       if (docSnap.exists()) {
         this.user = docSnap.data();
       } else {
